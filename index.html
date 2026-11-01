@@ -125,11 +125,11 @@
     .matchstick-item:active { cursor: grabbing; }
     .matchstick-item img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 
-    /* ขยับปุ่มหัวใจให้เลื่อนลงมาด้านล่างเพิ่มขึ้นจากเดิม */
+    /* ขยับปุ่มหัวใจเลื่อนมาทางซ้ายเพิ่มเติมเพื่อไม่ให้บังข้อความ */
     .bouncing-heart-trigger {
       position: absolute;
       bottom: 45px;
-      left: 50%;
+      left: 35%;
       transform: translateX(-50%);
       font-size: 75px;
       cursor: pointer;
@@ -141,7 +141,7 @@
       outline: none !important;
       box-shadow: none !important;
       -webkit-tap-highlight-color: transparent;
-      filter: drop-shadow(0 4px 12px rgba(220, 20, 60, 0.6));
+      filter: drop-shadow(0 4px 12px rgba(255, 141, 161, 0.7));
     }
 
     @keyframes heartBounce {
@@ -171,29 +171,32 @@
       cursor: pointer;
     }
 
+    /* เปลี่ยนรูปทรงและสีขอบหัวใจเป็นชมพูพาสเทล */
     .big-heart-shape {
       width: 100%;
       height: 100%;
-      background-color: #fff0f0;
+      background-color: #fff0f5;
       clip-path: path('M115,190 C115,190 20,125 20,65 C20,32 42,15 72,15 C91,15 105,25 115,38 C125,25 139,15 158,15 C188,15 210,32 210,65 C210,125 115,190 115,190 Z');
       position: relative;
-      border: 3px solid #ff4d4d;
-      box-shadow: 0 10px 25px rgba(230, 0, 0, 0.4);
+      border: 3px solid #ff8da1;
+      box-shadow: 0 10px 25px rgba(255, 141, 161, 0.4);
     }
 
+    /* เปลี่ยนสีเติมความรักเป็นไล่เฉดสีชมพูพาสเทล */
     .heart-water-fill {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
       height: 0%;
-      background: linear-gradient(0deg, #cc0000, #ff3333, #ff6666);
+      background: linear-gradient(0deg, #ff8da1, #ffacc7, #ffe0eb);
       transition: height 0.12s ease-out;
-      box-shadow: 0 -4px 12px rgba(230, 0, 0, 0.6);
+      box-shadow: 0 -4px 12px rgba(255, 141, 161, 0.5);
     }
 
+    /* ข้อความแนะนำโทนสีชมพูพาสเทล */
     .fill-instruction {
-      color: #d60000;
+      color: #ff6584;
       font-size: 15px;
       margin-top: 25px;
       font-weight: 500;
@@ -206,14 +209,14 @@
       50% { opacity: 1; }
     }
 
-    /* โทนสีขาว ม่วง ชมพู สำหรับหน้าแสดงรูป */
+    /* ปรับเป็นไฟล์ พื้นหลัง.png */
     .polaroid-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: linear-gradient(135deg, rgba(253, 245, 255, 0.85) 0%, rgba(243, 229, 245, 0.9) 50%, rgba(252, 231, 243, 0.85) 100%), url('พื้นหลัง.jpg');
+      background-image: linear-gradient(135deg, rgba(255, 245, 248, 0.85) 0%, rgba(245, 230, 248, 0.9) 50%, rgba(255, 235, 243, 0.85) 100%), url('พื้นหลัง.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -225,7 +228,6 @@
       overflow: hidden;
     }
 
-    /* พื้นหลังตกแต่ง ผีเสื้อ ดาว พระจันทร์ แบบลอยละล่อง */
     .magic-decorations {
       position: absolute;
       top: 0;
@@ -240,9 +242,9 @@
     .decor-item {
       position: absolute;
       font-size: 22px;
-      opacity: 0.45;
+      opacity: 0.5;
       animation: floatDecor 6s ease-in-out infinite;
-      filter: drop-shadow(0 0 4px rgba(186, 104, 200, 0.4));
+      filter: drop-shadow(0 0 4px rgba(255, 182, 193, 0.5));
     }
 
     @keyframes floatDecor {
@@ -257,7 +259,7 @@
       width: 110px;
       background: #ffffff;
       padding: 3px 3px 12px 3px;
-      box-shadow: 0 6px 16px rgba(106, 27, 154, 0.12), 0 2px 4px rgba(233, 30, 99, 0.08);
+      box-shadow: 0 6px 16px rgba(255, 141, 161, 0.15), 0 2px 4px rgba(233, 30, 99, 0.08);
       border-radius: 4px;
       cursor: pointer;
       opacity: 0;
@@ -276,7 +278,7 @@
       object-fit: contain;
       border-radius: 2px;
       display: block;
-      background-color: #faf5fc;
+      background-color: #fff8fa;
       transition: max-height 0.4s ease;
     }
 
@@ -286,13 +288,14 @@
       overflow: hidden;
       text-align: center;
       font-size: 11px;
-      color: #4a148c;
+      color: #6a1b9a;
       margin-top: 0;
       font-weight: 500;
       line-height: 1.3;
       transition: opacity 0.3s ease 0.1s, margin-top 0.3s ease, max-height 0.3s ease;
     }
 
+    /* ปุ่มปิดรูปภาพเป็นโทนชมพูพาสเทล */
     .polaroid .close-card-btn {
       opacity: 0;
       pointer-events: none;
@@ -301,14 +304,14 @@
       right: -8px;
       width: 26px;
       height: 26px;
-      background: #ab47bc;
+      background: #ff8da1;
       color: white;
       border-radius: 50%;
       text-align: center;
       line-height: 26px;
       font-size: 13px;
       font-weight: bold;
-      box-shadow: 0 2px 8px rgba(171, 71, 188, 0.4);
+      box-shadow: 0 2px 8px rgba(255, 141, 161, 0.5);
       cursor: pointer;
       z-index: 10;
       transition: opacity 0.3s ease, transform 0.3s ease;
@@ -359,7 +362,6 @@
       animation-delay: var(--anim-delay, 0s);
     }
 
-    /* ขยายขนาดรูปตอนกดดูให้ใหญ่และชัดเจนยิ่งขึ้นกว่าเดิม 80% (ความกว้าง 92vw, ความสูงภาพ 72vh) ตัวหนังสือเท่าเดิม */
     .polaroid.active {
       position: fixed !important;
       top: 50% !important;
@@ -370,7 +372,7 @@
       max-width: 92vw !important;
       height: auto !important;
       padding: 8px 8px 18px 8px !important;
-      box-shadow: 0 30px 60px rgba(74, 20, 140, 0.35) !important;
+      box-shadow: 0 30px 60px rgba(106, 27, 154, 0.25) !important;
       border-radius: 6px;
       animation: none !important;
       opacity: 1 !important;
@@ -378,7 +380,7 @@
       flex-direction: column;
       align-items: center;
       background: #ffffff;
-      border: 2px solid #e1bee7;
+      border: 2px solid #f8bbd0;
     }
 
     .polaroid.active img {
@@ -395,22 +397,23 @@
       max-height: 80px;
       margin-top: 10px;
       font-size: 14px;
-      color: #4a148c;
+      color: #6a1b9a;
     }
 
     .polaroid.active .close-card-btn {
       opacity: 1;
       pointer-events: auto;
       transform: scale(1);
-      background: #8e24aa;
+      background: #ff8da1;
     }
 
+    /* ปุ่มย้อนกลับเปลี่ยนเป็นชมพูพาสเทลน่ารัก */
     .back-to-message-btn {
       position: absolute;
       bottom: 25px;
       left: 50%;
       transform: translateX(-50%);
-      background: #8e24aa;
+      background: #ff8da1;
       color: #ffffff;
       border: none;
       padding: 10px 24px;
@@ -419,13 +422,13 @@
       font-weight: 500;
       cursor: pointer;
       z-index: 400;
-      box-shadow: 0 4px 15px rgba(142, 36, 170, 0.4);
+      box-shadow: 0 4px 15px rgba(255, 141, 161, 0.5);
       transition: transform 0.2s, background-color 0.2s;
     }
 
     .back-to-message-btn:active {
       transform: translateX(-50%) scale(0.95);
-      background: #6a1b9a;
+      background: #ff6584;
     }
 
     .floating-heart {
@@ -434,7 +437,7 @@
       z-index: 350;
       font-size: 26px;
       animation: floatUp 2.2s ease-out forwards;
-      filter: drop-shadow(0 2px 6px rgba(186, 104, 200, 0.5));
+      filter: drop-shadow(0 2px 6px rgba(255, 182, 193, 0.6));
     }
 
     @keyframes floatUp {
@@ -472,7 +475,8 @@
       <img id="matchImg" src="ไม้ขีด.png" alt="ไม้ขีด">
     </div>
 
-    <div class="bouncing-heart-trigger" id="heartTrigger">💜</div>
+    <!-- เปลี่ยนอิโมจิปุ่มเป็นชมพูพาสเทล 💕 -->
+    <div class="bouncing-heart-trigger" id="heartTrigger">💕</div>
 
     <div class="big-heart-modal" id="heartModal">
       <div class="big-heart-container" id="bigHeartContainer">
@@ -483,16 +487,14 @@
       <p class="fill-instruction">แตะหรือกดค้างเพื่อเติมความรัก ✨</p>
     </div>
 
-    <!-- หน้าแสดงรูปภาพโพลารอยด์ -->
     <div class="polaroid-overlay" id="polaroidOverlay">
-      <!-- องค์ประกอบตกแต่งธีม ขาว-ม่วง-ชมพู ผีเสื้อ ดาว พระจันทร์ -->
       <div class="magic-decorations">
         <span class="decor-item" style="top: 12%; left: 8%; animation-delay: 0s;">🦋</span>
         <span class="decor-item" style="top: 25%; right: 12%; animation-delay: 1.2s;">✨</span>
         <span class="decor-item" style="top: 48%; left: 5%; animation-delay: 2.4s;">🌙</span>
         <span class="decor-item" style="bottom: 18%; right: 10%; animation-delay: 0.8s;">🦋</span>
         <span class="decor-item" style="bottom: 12%; left: 15%; animation-delay: 1.8s;">⭐</span>
-        <span class="decor-item" style="top: 72%; right: 20%; animation-delay: 3s;">💜</span>
+        <span class="decor-item" style="top: 72%; right: 20%; animation-delay: 3s;">🌸</span>
       </div>
       <div class="polaroid-container" id="polaroidContainer"></div>
       <button class="back-to-message-btn" id="backBtn">ย้อนกลับ</button>
@@ -837,7 +839,8 @@
     }, { passive: false });
     window.addEventListener('touchend', stopWatering);
 
-    const redHearts = ['💜', '💗', '✨', '🌙', '🤍'];
+    /* อิโมจิหัวใจตอนลอยเปลี่ยนเป็นโทนชมพูพาสเทลน่ารัก */
+    const redHearts = ['💕', '💗', '💖', '🌸', '✨', '🤍'];
 
     function createFloatingHearts(count = 1, customX = null, customY = null) {
       for (let i = 0; i < count; i++) {
@@ -867,7 +870,6 @@
       }, 120);
     }
 
-    /* ปรับตำแหน่งกระจายตัวรูปทั้ง 5 ให้สมดุลทั่วจอ พร้อมเปลี่ยนข้อความและแก้ photo3.png เป็น photo3.jpg */
     const polaroidData = [
       { img: 'photo1.jpg', text: 'อยากไปกับหนูทุกที่เลย', top: '12%', left: '12%', rotate: '-7deg', duration: '1.8s', delay: '0s' },
       { img: 'photo2.jpg', text: 'โมเม้นท์แรกในชีวิตเลยนะ<br>มีความสุขมาก', top: '15%', left: '52%', rotate: '6deg', duration: '2.4s', delay: '0.4s' },
