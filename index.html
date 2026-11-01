@@ -125,7 +125,26 @@
     .matchstick-item:active { cursor: grabbing; }
     .matchstick-item img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 
-    /* ขยับปุ่มหัวใจเลื่อนมาทางซ้ายเพิ่มเติมเพื่อไม่ให้บังข้อความ */
+    /* ปุ่มเปิด/ปิดเพลงมุมขวาบน ป้องกัน Android บล็อกเพลง */
+    .music-toggle-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 500;
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1.5px solid #ff8da1;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      -webkit-tap-highlight-color: transparent;
+    }
+
     .bouncing-heart-trigger {
       position: absolute;
       bottom: 45px;
@@ -171,7 +190,6 @@
       cursor: pointer;
     }
 
-    /* เปลี่ยนรูปทรงและสีขอบหัวใจเป็นชมพูพาสเทล */
     .big-heart-shape {
       width: 100%;
       height: 100%;
@@ -182,7 +200,6 @@
       box-shadow: 0 10px 25px rgba(255, 141, 161, 0.4);
     }
 
-    /* เปลี่ยนสีเติมความรักเป็นไล่เฉดสีชมพูพาสเทล */
     .heart-water-fill {
       position: absolute;
       bottom: 0;
@@ -194,7 +211,6 @@
       box-shadow: 0 -4px 12px rgba(255, 141, 161, 0.5);
     }
 
-    /* ข้อความแนะนำโทนสีชมพูพาสเทล */
     .fill-instruction {
       color: #ff6584;
       font-size: 15px;
@@ -209,7 +225,6 @@
       50% { opacity: 1; }
     }
 
-    /* ปรับเป็นไฟล์ พื้นหลัง.png */
     .polaroid-overlay {
       position: absolute;
       top: 0;
@@ -244,7 +259,7 @@
       font-size: 22px;
       opacity: 0.5;
       animation: floatDecor 6s ease-in-out infinite;
-      filter: drop-shadow(0 0 4px rgba(255, 182, 193, 0.5));
+      filter: drop-shadow(0 0 4px rgba(255, 182, 193, 0.6));
     }
 
     @keyframes floatDecor {
@@ -295,7 +310,6 @@
       transition: opacity 0.3s ease 0.1s, margin-top 0.3s ease, max-height 0.3s ease;
     }
 
-    /* ปุ่มปิดรูปภาพเป็นโทนชมพูพาสเทล */
     .polaroid .close-card-btn {
       opacity: 0;
       pointer-events: none;
@@ -407,7 +421,6 @@
       background: #ff8da1;
     }
 
-    /* ปุ่มย้อนกลับเปลี่ยนเป็นชมพูพาสเทลน่ารัก */
     .back-to-message-btn {
       position: absolute;
       bottom: 25px;
@@ -453,11 +466,13 @@
 </head>
 <body>
 
-  <audio id="bgMusic" loop preload="auto">
+  <audio id="bgMusic" loop preload="auto" playsinline>
     <source src="song.mp3" type="audio/mpeg">
   </audio>
 
   <div class="app-viewport" id="viewport">
+    <div class="music-toggle-btn" id="musicBtn">🎵</div>
+
     <div class="card-container" id="cardContainer">
       <img src="กระดาษ3.png" class="layer-3-message" alt="ข้อความ">
       <canvas id="burnCanvas"></canvas>
@@ -475,7 +490,6 @@
       <img id="matchImg" src="ไม้ขีด.png" alt="ไม้ขีด">
     </div>
 
-    <!-- เปลี่ยนอิโมจิปุ่มเป็นชมพูพาสเทล 💕 -->
     <div class="bouncing-heart-trigger" id="heartTrigger">💗</div>
 
     <div class="big-heart-modal" id="heartModal">
@@ -508,6 +522,7 @@
     const fxCanvas = document.getElementById('fxCanvas');
     const fxCtx = fxCanvas.getContext('2d');
     const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
 
     const matchEl = document.getElementById('draggableMatch');
     const matchImg = document.getElementById('matchImg');
@@ -517,23 +532,46 @@
     const backBtn = document.getElementById('backBtn');
 
     let continuousHeartsInterval = null;
+    let audioUnlocked = false;
 
+    // ฟังก์ชันสั่งเล่นเสียงและปลดล็อกเสียงสำหรับ Android / iOS
     function playAudioOnFirstInteraction() {
-      if (bgMusic && bgMusic.paused) {
-        bgMusic.play().then(() => {
-          console.log("Music started playing automatically");
-        }).catch((err) => {
-          console.log("Autoplay waiting for interaction:", err);
-        });
-      }
+      if (!bgMusic) return;
+      
+      bgMusic.play().then(() => {
+        audioUnlocked = true;
+        musicBtn.innerText = '🎵';
+        removeAudioListeners();
+      }).catch((err) => {
+        console.log("Autoplay waiting for interaction:", err);
+      });
+    }
+
+    function removeAudioListeners() {
       window.removeEventListener('touchstart', playAudioOnFirstInteraction);
+      window.removeEventListener('touchend', playAudioOnFirstInteraction);
       window.removeEventListener('click', playAudioOnFirstInteraction);
       window.removeEventListener('mousedown', playAudioOnFirstInteraction);
     }
 
     window.addEventListener('touchstart', playAudioOnFirstInteraction, { passive: true });
+    window.addEventListener('touchend', playAudioOnFirstInteraction, { passive: true });
     window.addEventListener('click', playAudioOnFirstInteraction);
     window.addEventListener('mousedown', playAudioOnFirstInteraction);
+
+    // ปุ่มกดเปิด/ปิดเสียงบนมุมขวา
+    musicBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (bgMusic.paused) {
+        bgMusic.play().then(() => {
+          musicBtn.innerText = '🎵';
+          audioUnlocked = true;
+        });
+      } else {
+        bgMusic.pause();
+        musicBtn.innerText = '🔇';
+      }
+    });
 
     let isLit = false;
     let frictionScore = 0;
@@ -629,7 +667,7 @@
     }
 
     function onStart(e) {
-      if (e.cancelable) e.preventDefault();
+      playAudioOnFirstInteraction(); // เรียกใช้เล่นเพลงทันทีเมื่อแตะจับไม้ขีดไฟ
       isDraggingMatch = true;
       const clientX = e.clientX || (e.touches && e.touches[0].clientX);
       const clientY = e.clientY || (e.touches && e.touches[0].clientY);
@@ -707,7 +745,7 @@
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onEnd);
 
-    matchEl.addEventListener('touchstart', onStart, { passive: false });
+    matchEl.addEventListener('touchstart', onStart, { passive: true });
     window.addEventListener('touchmove', onMove, { passive: false });
     window.addEventListener('touchend', onEnd);
 
@@ -773,6 +811,7 @@
           ctx.clearRect(0, 0, rect.width, rect.height);
           strikerContainer.style.display = 'none';
           heartTrigger.style.display = 'block';
+          playAudioOnFirstInteraction(); // ลองสั่งเล่นเพลงอีกครั้ง
         }
       }
 
@@ -798,6 +837,7 @@
       waterFill.style.height = '0%';
       heartTrigger.style.display = 'none';
       heartModal.style.display = 'flex';
+      playAudioOnFirstInteraction();
     });
 
     let waterLevel = 0;
@@ -822,6 +862,7 @@
     }
 
     function startWatering() {
+      playAudioOnFirstInteraction();
       addWater();
       fillInterval = setInterval(addWater, 60);
     }
@@ -834,12 +875,10 @@
     window.addEventListener('mouseup', stopWatering);
 
     bigHeartContainer.addEventListener('touchstart', (e) => {
-      e.preventDefault();
       startWatering();
-    }, { passive: false });
+    }, { passive: true });
     window.addEventListener('touchend', stopWatering);
 
-    /* อิโมจิหัวใจตอนลอยเปลี่ยนเป็นโทนชมพูพาสเทลน่ารัก */
     const redHearts = ['💜', '💗', '🌙', '✨', '🤍'];
 
     function createFloatingHearts(count = 1, customX = null, customY = null) {
